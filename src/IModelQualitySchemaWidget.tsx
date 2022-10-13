@@ -7,8 +7,9 @@ import { AbstractWidgetProps, StagePanelLocation, StagePanelSection, UiItemsProv
 import { useActiveIModelConnection } from "@itwin/appui-react";
 import { Table } from "@itwin/itwinui-react";
 import IModelQualityApi from "./IModelQualityApi";
+import { jsonData } from "./IModelQualityJsonData";
 
-const IModelQualityTableWidget = () => {
+const IModelQualitySchemaWidget = () => {
   const iModelConnection = useActiveIModelConnection();
   const [imodelQualityData, setIModelQualityData] = React.useState<any>();
 
@@ -30,70 +31,34 @@ const IModelQualityTableWidget = () => {
 
   const columnDefinition = useMemo(() => [
     {
-      Header: "IModel Metadata",
+      Header: "Table",
       columns: [
         {
-          id: "schemaCount",
-          Header: "Schema Count",
-          accessor: "schemaCount",
+          id: "schemaNames",
+          Header: "Schema Name",
+          accessor: "schemaNames",
         },
-        {
-          id: "classCount",
-          Header: "Class Count",
-          accessor: "classCount",
-        },
-        {
-          id: "propertyCount",
-          Header: "Property Count",
-          accessor: "propertyCount",
-        },
-        {
-          id: "connectorCount",
-          Header: "Connector Count",
-          accessor: "connectorCount",
-        },
-        {
-          id: "facilityCount",
-          Header: "Facility Count",
-          accessor: "facilityCount",
-        }
       ],
-    },
-    {   
-    Header: "Class Info",
-      columns: [
-        {
-          id: "modelCount",
-          Header: "Model Count",
-          accessor: "modelCount",
-        }
-      ]
     }
   ], []);
 
   const data = useMemo(() => {
     const rows: any[] = [];
 
-    if (!imodelQualityData || !imodelQualityData.iModelMetadata || !imodelQualityData.classInfo) {
+    if (!imodelQualityData || !imodelQualityData.iModelMetadata) {
       return rows;
     }
 
-    const row: Record<string, any> = {};
+    for (const rowData of imodelQualityData.iModelMetadata.schemaNames) {
+      const row: Record<string, any> = {};
 
-    columnDefinition[0].columns.forEach((column) => {
-      let cellValue: string = "";
-      cellValue = imodelQualityData.iModelMetadata[column.id]?imodelQualityData.iModelMetadata[column.id].toString(): "";
-      row[column.id] = cellValue;
-    });
+      columnDefinition[0].columns.forEach((column) => {
+        let cellValue: string = rowData? rowData.toString(): "";
+        row[column.id] = cellValue;
+      });
 
-    columnDefinition[1].columns.forEach((column) => {
-      let cellValue: string = "";
-      cellValue = imodelQualityData.classInfo[column.id]?imodelQualityData.classInfo[column.id].toString(): "";
-      row[column.id] = cellValue;
-    });
-
-    rows.push(row);
-
+      rows.push(row);
+    }
     return rows;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [imodelQualityData]);
@@ -102,7 +67,6 @@ const IModelQualityTableWidget = () => {
     <Table
       data={data}
       columns={columnDefinition}
-      //onRowClick={onRowClick}
       isLoading={!imodelQualityData}
       emptyTableContent={"No data"}
       density="extra-condensed"
@@ -110,18 +74,18 @@ const IModelQualityTableWidget = () => {
   );
 };
 
-export class IModelQualityTableWidgetProvider implements UiItemsProvider {
-  public readonly id: string = "IModelQualityTableWidgetProvider";
+export class IModelQualitySchemaWidgetProvider implements UiItemsProvider {
+  public readonly id: string = "IModelQualitySchemaWidgetProvider";
 
   public provideWidgets(_stageId: string, _stageUsage: string, location: StagePanelLocation, _section?: StagePanelSection): ReadonlyArray<AbstractWidgetProps> {
     const widgets: AbstractWidgetProps[] = [];
     if (location === StagePanelLocation.Bottom && _section === StagePanelSection.Start) {
       widgets.push(
         {
-          id: "IModelQualityTableWidget",
-          label: "QualityReport",
+          id: "IModelQualitySchemaWidget",
+          label: `Schemas (${jsonData.iModelMetadata.schemaNames.length})`,
           defaultState: WidgetState.Open,
-          getWidgetContent: () => <IModelQualityTableWidget />,
+          getWidgetContent: () => <IModelQualitySchemaWidget />,
         }
       );
     }

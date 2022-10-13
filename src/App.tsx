@@ -10,7 +10,9 @@ import type { ScreenViewport } from "@itwin/core-frontend";
 import { FitViewTool, IModelApp, StandardViewId } from "@itwin/core-frontend";
 import { FillCentered } from "@itwin/core-react";
 import { ProgressLinear } from "@itwin/itwinui-react";
-import { IModelQualityTableWidgetProvider } from "./IModelQualityTableWidget";
+import { IModelQualityClassWidgetProvider } from "./IModelQualityClassWidget";
+import { IModelQualityPropertyWidgetProvider } from "./IModelQualityPropertyWidget";
+import { IModelQualitySchemaWidgetProvider } from "./IModelQualitySchemaWidget";
 import {
   MeasureTools,
   MeasureToolsUiItemsProvider,
@@ -173,7 +175,9 @@ const App: React.FC = () => {
             enableCopyingPropertyText: true,
           }),
           new MeasureToolsUiItemsProvider(),
-          new IModelQualityTableWidgetProvider()
+          new IModelQualitySchemaWidgetProvider(),
+          new IModelQualityClassWidgetProvider(),
+          new IModelQualityPropertyWidgetProvider()         
         ]}
       />
     </div>
