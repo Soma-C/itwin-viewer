@@ -99,7 +99,7 @@ export class IModelQualityModelsWidgetProvider implements UiItemsProvider {
       widgets.push(
         {
           id: "IModelQualityModelsWidget",
-          label: `Models (${jsonData.classInfo.classes.length})`,
+          label: `Models (${jsonData.modelInfo.modelsCountPerClass.length})`,
           defaultState: WidgetState.Open,
           getWidgetContent: () => <IModelQualityModelsWidget />,
         }

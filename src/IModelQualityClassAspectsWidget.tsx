@@ -99,7 +99,7 @@ export class IModelQualityClassAspectsWidgetProvider implements UiItemsProvider 
       widgets.push(
         {
           id: "IModelQualityClassAspectsWidget",
-          label: `Class Aspects (${jsonData.classInfo.classes.length})`,
+          label: `Class Aspects (${jsonData.classInfo.aspects.length})`,
           defaultState: WidgetState.Open,
           getWidgetContent: () => <IModelQualityClassAspectsWidget />,
         }
