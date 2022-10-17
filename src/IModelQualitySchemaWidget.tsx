@@ -2,7 +2,7 @@
 * Copyright (c) Bentley Systems, Incorporated. All rights reserved.
 * See LICENSE.md in the project root for license terms and full copyright notice.
 *--------------------------------------------------------------------------------------------*/
-import React, { useEffect, useMemo } from "react";
+import React, { useCallback, useEffect, useMemo } from "react";
 import { AbstractWidgetProps, StagePanelLocation, StagePanelSection, UiItemsProvider, WidgetState } from "@itwin/appui-abstract";
 import { useActiveIModelConnection } from "@itwin/appui-react";
 import { Table } from "@itwin/itwinui-react";
@@ -63,11 +63,16 @@ const IModelQualitySchemaWidget = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [imodelQualityData]);
 
+  const onRowClick = useCallback((_, row) => {
+    // IModelQualityApi.visualizeClash(row.original.elementAId, row.original.elementBId);
+  }, []);
+  
   return (
     <Table
       data={data}
       columns={columnDefinition}
       isLoading={!imodelQualityData}
+      onRowClick={onRowClick}
       emptyTableContent={"No data"}
       density="extra-condensed"
       style={{ height: "100%", width: "auto" }} />
