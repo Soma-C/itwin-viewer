@@ -11,7 +11,7 @@ import { FitViewTool, IModelApp, StandardViewId } from "@itwin/core-frontend";
 import { FillCentered } from "@itwin/core-react";
 import { ProgressLinear } from "@itwin/itwinui-react";
 import { IModelQualityClassWidgetProvider } from "./IModelQualityClassWidget";
-import { IModelQualityPropertyWidgetProvider } from "./IModelQualityPropertyWidget";
+// import { IModelQualityPropertyWidgetProvider } from "./IModelQualityPropertyWidget";
 import { IModelQualitySchemaWidgetProvider } from "./IModelQualitySchemaWidget";
 import {
   MeasureTools,
