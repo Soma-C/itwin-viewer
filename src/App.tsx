@@ -11,7 +11,7 @@ import { FitViewTool, IModelApp, StandardViewId } from "@itwin/core-frontend";
 import { FillCentered } from "@itwin/core-react";
 import { ProgressLinear } from "@itwin/itwinui-react";
 import { IModelQualityClassWidgetProvider } from "./IModelQualityClassWidget";
-import { IModelQualityPropertyWidgetProvider } from "./IModelQualityPropertyWidget";
+// import { IModelQualityPropertyWidgetProvider } from "./IModelQualityPropertyWidget";
 import { IModelQualitySchemaWidgetProvider } from "./IModelQualitySchemaWidget";
 import {
   MeasureTools,
@@ -36,6 +36,8 @@ import {
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 
 import { history } from "./history";
+import { IModelQualityModelsWidgetProvider } from "./IModelQualityModelsWidget";
+import { IModelQualityClassAspectsWidgetProvider } from "./IModelQualityClassAspectsWidget";
 
 const App: React.FC = () => {
   const [iModelId, setIModelId] = useState(process.env.IMJS_IMODEL_ID);
@@ -177,7 +179,9 @@ const App: React.FC = () => {
           new MeasureToolsUiItemsProvider(),
           new IModelQualitySchemaWidgetProvider(),
           new IModelQualityClassWidgetProvider(),
-          new IModelQualityPropertyWidgetProvider()         
+          // new IModelQualityPropertyWidgetProvider(),
+          new IModelQualityModelsWidgetProvider(),
+          new IModelQualityClassAspectsWidgetProvider()
         ]}
       />
     </div>

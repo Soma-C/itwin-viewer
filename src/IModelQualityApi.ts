@@ -3,7 +3,8 @@
 * See LICENSE.md in the project root for license terms and full copyright notice.
 *--------------------------------------------------------------------------------------------*/
 import { BeEvent } from "@itwin/core-bentley";
-import { EmphasizeElements, IModelApp } from "@itwin/core-frontend";
+import { ColorDef, FeatureOverrideType } from "@itwin/core-common";
+import { EmphasizeElements, IModelApp, ViewChangeOptions } from "@itwin/core-frontend";
 import { jsonData } from "./IModelQualityJsonData";
 
 export default class IModelQualityApi {
@@ -34,5 +35,26 @@ export default class IModelQualityApi {
     const provider = EmphasizeElements.getOrCreate(vp);
     provider.clearEmphasizedElements(vp);
     provider.clearOverriddenElements(vp);
+  }
+
+  public static visualizeClash(elementIds: string[]) {
+    if (!IModelApp.viewManager.selectedView)
+      return;
+
+    const vp = IModelApp.viewManager.selectedView;
+    const provider = EmphasizeElements.getOrCreate(vp);
+    provider.clearEmphasizedElements(vp);
+    provider.clearOverriddenElements(vp);
+    provider.overrideElements(elementIds, vp, ColorDef.red, FeatureOverrideType.ColorOnly, true);
+    // provider.overrideElements(elementBId, vp, ColorDef.blue, FeatureOverrideType.ColorOnly, false);
+    provider.wantEmphasis = true;
+    provider.emphasizeElements(elementIds, vp, undefined, false);
+
+    const viewChangeOpts: ViewChangeOptions = {};
+    viewChangeOpts.animateFrustumChange = true;
+    vp.zoomToElements(elementIds, { ...viewChangeOpts })
+        .catch((error) => {
+          console.error(error);
+        })
   }
 }
